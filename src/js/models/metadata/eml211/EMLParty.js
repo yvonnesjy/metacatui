@@ -63,14 +63,14 @@ define(["jquery", "underscore", "backbone", "models/DataONEObject"], function (
           this.set(this.parse(options.objectDOM));
 
         if (!this.get("xmlID")) this.createID();
-        this.startListening();
+        this.startListeners();
       },
 
       /**
        * Remove event listeners from this model
        * @since x.x.x
        */
-      stopListening: function () {
+      stopListeners: function () {
         this.stopListening(this, "change:roles");
       },
 
@@ -78,8 +78,8 @@ define(["jquery", "underscore", "backbone", "models/DataONEObject"], function (
        * Start listening to events on this model
        * @since x.x.x
        */
-      startListening: function () {
-        this.stopListening();
+      startListeners: function () {
+        this.stopListeners();
         this.listenTo(this, "change:roles", this.setType);
       },
 
