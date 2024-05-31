@@ -1,0 +1,148 @@
+body {
+  height: 97vh;
+}
+
+.error {
+  display: none;
+}
+
+.map-view {
+  border: 1px solid black;
+  div {
+    border: 1px solid black;
+  }
+
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  height: 100%;
+
+  .map-view__toolbar-container {
+    /* Required for collapse-handle's positioning. */
+    position: relative;
+
+    width: 22.5rem;
+    height: 100%;
+
+    .collapse-handle {
+      position: absolute;
+      left: 100%;
+      top: 0.5rem;
+    }
+
+    .toolbar__all-content {
+      display: flex;
+      flex-direction: column;
+
+      width: 100%;
+      height: 100%;
+
+      .tools-mobile {
+        display: none;
+
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        width: 15%;
+      }
+
+      .nav-bar {
+        height: 3.5rem;
+      }
+
+      .toolbar-content {
+        display: flex;
+        flex-direction: column;
+        /* Takes up remaining space from the nav bar. */
+        flex-grow: 1;
+
+        min-height: 0;
+
+        .shared-search {
+          flex-shrink: 0;
+
+          height: 2.5rem;
+        }
+
+        .resizable-panels-container {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+
+          min-height: 0;
+
+          .resizable-panel {
+            flex-grow: 1;
+
+            min-height: 2.5rem;
+            overflow: auto;
+
+            .resizable-panel-content {
+              /* Shared styling */
+            }
+          }
+
+          .drag-handle {
+            flex-shrink: 0;
+
+            height: 1.5rem;
+          }
+        }
+
+        .tools-default {
+          flex-shrink: 0;
+
+          height: 4.5rem;
+        }
+      }
+    }
+  }
+  .cesium-widget {
+    flex-grow: 1;
+  }
+}
+
+/* Mobile portrait. */
+@media only screen and (max-width: 640px) and (orientation: portrait) {
+  .map-view {
+    flex-direction: column;
+  
+    .map-view__toolbar-container {
+      width: 100%;
+      height: 50%;
+      
+      .collapse-handle {
+        left: 50%;
+        top: 100%;
+        transform-origin: bottom left;
+        transform: translate(0, -100%) rotate(90deg) translate(0, 50%);
+      }
+    }
+  }
+}
+
+/* Mobile. */
+@media only screen and (max-width: 640px),
+            screen and (max-height: 640px) {
+  /* Ancestor specificity is required to override. */
+  .map-view .map-view__toolbar-container .toolbar__all-content .tools-mobile {
+    display: block;
+  }
+  .tools-default {
+    display: none;
+  }
+}
+
+@media only screen and (orientation: portrait) and (max-width: 308px),
+            screen and (orientation: portrait) and (max-height: 616px),
+            screen and (orientation: landscape) and (max-width: 616px),
+            screen and (orientation: landscape) and (max-height: 308px) {
+  .map-view {
+    display: none;
+  }
+  .error {
+    display: block;
+  }
+}

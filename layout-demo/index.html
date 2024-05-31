@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+    <script>
+      const onDrag = (prevResizablePanel, nextResizablePanel, event, ui) => {
+        const resizablePanelMinHeight = parseInt($(".resizable-panel").css("min-height"));
+
+        let prevPanelNewHeight = ui.offset.top - prevResizablePanel.offset().top;
+        const prevPanelMinBottom = prevResizablePanel.offset().top + resizablePanelMinHeight;
+        if (prevPanelMinBottom - ui.offset.top > 0) {
+          prevPanelNewHeight = resizablePanelMinHeight;
+        }
+
+        const nextPanelBottom = nextResizablePanel.offset().top + nextResizablePanel.height();
+        const nextPanelMaxTop = nextPanelBottom - resizablePanelMinHeight;
+        const dragHanldeBottom = ui.offset.top + ui.helper.height();
+        let nextPanelNewHeight = nextPanelBottom - dragHanldeBottom;
+        if (nextPanelMaxTop - dragHanldeBottom < 0) {
+          nextPanelNewHeight = resizablePanelMinHeight;
+        }
+
+        prevResizablePanel.height(prevPanelNewHeight);
+        nextResizablePanel.height(nextPanelNewHeight);
+        // Drag bar naturally moves when we adjust the panels heights.
+        ui.position.top = 0;
+      };
+
+      $(document).ready(() => {
+        $("#drag-handle-1").draggable({
+          axis: "y",
+          containment: "parent",
+          drag: _.partial(onDrag, $("#resizable-panel-1"), $("#resizable-panel-2")),
+        });
+
+        $("#drag-handle-2").draggable({
+          axis: "y",
+          containment: "parent",
+          drag: _.partial(onDrag, $("#resizable-panel-2"), $("#resizable-panel-3")),
+        });
+      });
+    </script>
+    <div class="error">Window is too small!</div>
+    <div class="map-view">
+      <div class="map-view__toolbar-container">
+        <div class="toolbar__all-content">
+          <div class="tools-mobile">tools</div>
+          <div class="nav-bar">nav bar</div>
+          <div class="toolbar-content">
+            <div class="shared-search">search</div>
+            <div class="resizable-panels-container">
+              <div class="resizable-panel" id="resizable-panel-1">
+                <div class="resizable-panel-content viewfinder-zoom-presets">zoom presets <br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+              </div>
+              <div class="drag-handle" id="drag-handle-1">drag handle</div>
+              <div class="resizable-panel" id="resizable-panel-2">
+                <div class="resizable-panel-content layer-category-list">layers <br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+              </div>
+              <div class="drag-handle" id="drag-handle-2">drag handle</div>
+              <div class="resizable-panel" id="resizable-panel-3">
+                <div class="resizable-panel-content test">3rd panel <br><br>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+              </div>
+            </div>
+            <div class="tools-default">tools</div>
+          </div>
+        </div>
+        <div class="collapse-handle">collapse handle</div>
+      </div>
+      <div class="cesium-widget">cesium map</div>
+    </div>
+  </body>
+</html>
